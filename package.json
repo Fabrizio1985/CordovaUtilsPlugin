@@ -1,0 +1,28 @@
+{
+	"name": "cordova-plugin-utils",
+	"version": "1.0.0",
+	"description": "Apache Cordova Execute Shell Command Plugin",
+	"cordova": {
+		"id": "cordova-plugin-utils",
+		"platforms": [
+			"android",
+			"electron"
+		]
+	},
+	"keywords": [
+		"exec",
+		"runtime",
+		"process",
+		"shell",
+		"console",
+		"command",
+		"ecosystem:cordova",
+		"cordova-android"
+	],
+	"engines": {
+		"name": "cordova",
+		"version": ">=5.0.0"
+	},
+	"author": "Fabrizio",
+	"license": "Apache 2.0"
+}
