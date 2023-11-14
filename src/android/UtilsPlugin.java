@@ -24,11 +24,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import androidx.core.app.ShareCompat;
-import androidx.core.content.FileProvider;
 import android.util.Base64;
 import android.util.Log;
 import android.view.WindowManager;
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
 
 @SuppressWarnings({"java:S2293", "java:S112"})
 public class UtilsPlugin extends CordovaPlugin {
@@ -83,6 +83,9 @@ public class UtilsPlugin extends CordovaPlugin {
 				
 			} else if (action.equals("resolveUri")) {
 				this.resolveUri(args, callbackContext);
+				
+			} else if(action.equals("sdkVersion")){
+				this.sdkVersion(callbackContext);
 				
 			} else if (action.equals("exit")) {
 				
@@ -245,6 +248,10 @@ public class UtilsPlugin extends CordovaPlugin {
 		
 		callbackContext.sendPluginResult(result);
 		//callbackContext.success();
+	}
+	
+	private void sdkVersion(final CallbackContext callbackContext) {
+		callbackContext.success( android.os.Build.VERSION.SDK_INT );
 	}
 
 	private boolean installUpdate(final JSONArray args, final CallbackContext callbackContext) {

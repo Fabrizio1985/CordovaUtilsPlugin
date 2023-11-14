@@ -103,5 +103,9 @@ module.exports = {
 	
 	keepAwake: () => {
 		return new Promise(( resolve, reject ) => cordova.exec( resolve, reject, "UtilsPlugin", 'keepAwake', [] ) );
+	},
+	
+	getSdkVersion: () => {
+		return new Promise(( resolve, reject ) => cordova.exec( resolve, reject, "UtilsPlugin", 'sdkVersion', [] ) );
 	}
 }
