@@ -20,8 +20,9 @@ export interface CordovaUtils {
 
 	android: {
 		resolveUri: (uri: string) => Promise<string>;
-		sdkVersion: () => Promise<void>;
+		sdkVersion: () => Promise<number>;
 		uploadGoogle: (path: string) => Promise<void>;
+		keepAwake: () => Promise<void>;
 	},
 
 	localStorage: {

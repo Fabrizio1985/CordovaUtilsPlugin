@@ -13,6 +13,9 @@ module.exports = {
 		},
 		uploadGoogle: (path) => {
 			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'uploadGoogle', [path]));
+		},
+		keepAwake: () => {
+			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'keepAwake', []));
 		}
 	},
 
@@ -29,9 +32,9 @@ module.exports = {
 		const nameTemp = typeof name === 'string' ? name : name.android;
 		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "readFile", [nameTemp]));
 	},
-	
+
 	selectFile: (properties) => {
-		
+
 	},
 
 	removeFile: (path) => {
@@ -105,9 +108,5 @@ module.exports = {
 
 	createWriteStream: (path) => {
 		return null;
-	},
-
-	keepAwake: () => {
-		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'keepAwake', []));
 	}
 }
