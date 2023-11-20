@@ -9,7 +9,7 @@ export interface CordovaUtils {
 	installUpdate: (blob: Blob) => Promise<void>;
 	getTempPath: () => Promise<string>;
 	getPlatform: () => string;
-	getAppVersion: () => number;
+	getAppVersion: () => Promise<string>;
 	getUserDataFolder: () => Promise<string>;
 	pathJoin: (...path: string[]) => string;
 	checkFileExist: (path: string) => Promise<true>;
