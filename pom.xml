@@ -1,23 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.fabrizio</groupId>
-	<artifactId>cordova-plugin-apkinstaller</artifactId>
+	<artifactId>cordova-utils-plugin</artifactId>
 	<version>0.0.0.</version>
-
-	<repositories>
-		<repository>
-			<id>my-repo</id>
-			<url>http://fabriziotiracorrendo.netsons.org/maven/</url>
-		</repository>
-	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<android.sdk.platform>21</android.sdk.platform>
 
 		<!-- Versioni dipendenze -->
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<dependencies>
@@ -25,7 +19,7 @@
 		<dependency>
 			<groupId>it.fabrizio</groupId>
 			<artifactId>cordova-android-source</artifactId>
-			<version>[10.0.0,)</version>
+			<version>33.0.0</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -35,6 +29,7 @@
 			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
+		
 	</dependencies>
 
 	<build>

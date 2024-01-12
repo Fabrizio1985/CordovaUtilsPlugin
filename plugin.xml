@@ -8,7 +8,7 @@
   	<platform name="android">
   		<preference name="ANDROID_SUPPORT_V4_VERSION" default="24.+" />
   	
-	  	<framework src="src/android/utilsPlugin.gradle" custom="true" type="gradleReference"/>
+	  	<framework src="res/utilsPlugin.gradle" custom="true" type="gradleReference"/>
 	    <framework src="com.android.support:support-v4:$ANDROID_SUPPORT_V4_VERSION" />
 	  
 	  	<js-module name="UtilsPlugin" src="www/android/UtilsPlugin.js">
@@ -42,7 +42,7 @@
     	<source-file src="src/android/UtilsPlugin.java" target-dir="src/org/apache/cordova/UtilsPlugin" />
 	    <source-file src="src/android/UriUtils.java" target-dir="src/org/apache/cordova/UtilsPlugin" />
 	    <source-file src="src/android/ApkInstallerProvider.java" target-dir="src/org/apache/cordova/apkInstaller/"/>
-	    <source-file src="src/android/xml/file_paths.xml" target-dir="res/xml/"/>
+	    <source-file src="res/xml/file_paths.xml" target-dir="res/xml/"/>
   	</platform>
   
   	<platform name="electron">
