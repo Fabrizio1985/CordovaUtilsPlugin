@@ -1,25 +1,30 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>it.fabrizio</groupId>
-	<artifactId>cordova-utils-plugin</artifactId>
-	<version>0.0.0.</version>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>fabrizio</groupId>
+  <artifactId>cordova-utils</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <repositories>
+		<repository>
+			<id>my-repo</id>
+			<url>http://fabriziotiracorrendo.netsons.org/maven/</url>
+		</repository>
+	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Versioni dipendenze -->
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.17</maven.compiler.source>
+		<maven.compiler.target>1.17</maven.compiler.target>
 	</properties>
 
 	<dependencies>
-
+	
 		<dependency>
 			<groupId>it.fabrizio</groupId>
 			<artifactId>cordova-android-source</artifactId>
-			<version>33.0.0</version>
+			<version>13.0.0</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -29,7 +34,6 @@
 			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
-		
 	</dependencies>
 	
 	<!-- BLOCCO QUESTA LIBRERIA A QUESTA VERSIONE -->

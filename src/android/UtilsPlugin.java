@@ -30,7 +30,6 @@ import android.view.WindowManager;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 
-@SuppressWarnings({"java:S2293", "java:S112"})
 public class UtilsPlugin extends CordovaPlugin {
 	
 	public static final int READ_EXTERNAL_STORAGE = 112;
