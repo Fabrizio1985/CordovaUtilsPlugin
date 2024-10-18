@@ -261,12 +261,14 @@ public class UtilsPlugin extends CordovaPlugin {
 
 			public void run() {
 
+				File file = null;
+				
 				try {
 					String dataBade64 = args.getString(0);
 
 					byte[] decode = Base64.decode(dataBade64, 0);
 
-					File file = new File(cordova.getActivity().getExternalCacheDir(), "update.apk");
+					file = new File(cordova.getActivity().getExternalCacheDir(), "update.apk");
 
 					if (file.exists()) {
 						FileUtils.deleteQuietly(file);
@@ -295,7 +297,13 @@ public class UtilsPlugin extends CordovaPlugin {
 				} catch (Exception e) {
 					e.printStackTrace();
 					callbackContext.error(e.getMessage());
-				}
+					
+				} finally {
+					
+					if (null != file && file.exists()) {
+						FileUtils.deleteQuietly(file);
+					}
+				} 
 			}
 		});
 		return true;
