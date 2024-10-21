@@ -301,7 +301,7 @@ public class UtilsPlugin extends CordovaPlugin {
 				} finally {
 					
 					if (null != file && file.exists()) {
-						FileUtils.deleteQuietly(file);
+						//FileUtils.deleteQuietly(file);
 					}
 				} 
 			}
