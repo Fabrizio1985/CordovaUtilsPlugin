@@ -297,13 +297,7 @@ public class UtilsPlugin extends CordovaPlugin {
 				} catch (Exception e) {
 					e.printStackTrace();
 					callbackContext.error(e.getMessage());
-					
-				} finally {
-					
-					if (null != file && file.exists()) {
-						FileUtils.deleteQuietly(file);
-					}
-				} 
+				}
 			}
 		});
 		return true;
