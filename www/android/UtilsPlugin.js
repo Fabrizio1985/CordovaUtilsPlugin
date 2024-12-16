@@ -16,6 +16,12 @@ module.exports = {
 		},
 		keepAwake: () => {
 			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'keepAwake', []));
+		},
+		passkeyAssertion: (options) => {
+			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'passkeyAssertion', [options]));
+		},
+		createPasskey: (options) => {
+			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'createPasskey', [options]));
 		}
 	},
 

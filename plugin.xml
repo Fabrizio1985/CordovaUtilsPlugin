@@ -21,6 +21,14 @@
         		<param name="onload" value="true" />
       		</feature>
     	</config-file>
+    	
+    	<config-file target="res/values/strings.xml" parent="/*">
+        	<string name="asset_statements" translatable="false">
+				[{
+  					\"include\": \"https://fabriziotiracorrendo.netsons.org/.well-known/assetlinks.json\"
+				}]
+			</string>
+    	</config-file> 
     
      	<config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<provider 
@@ -30,8 +38,15 @@
 				android:grantUriPermissions="true">
 				<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
 			</provider>
+			
+			<service android:name="androidx.credentials.playservices.CredentialProviderMetadataHolder">
+  				<meta-data
+    				android:name="androidx.credentials.CREDENTIAL_PROVIDER_KEY"
+    				android:value="androidx.credentials.playservices.CredentialProviderPlayServicesImpl" />
+			</service>
+			
+			<meta-data android:name="asset_statements" android:resource="@string/asset_statements" />
     	</config-file>
-    
     
     	<config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
@@ -39,10 +54,11 @@
             <uses-permission android:name="android.permission.INTERNET"/>
     	</config-file>
     
-    	<source-file src="src/android/UtilsPlugin.java" target-dir="src/org/apache/cordova/UtilsPlugin" />
+	    <source-file src="src/android/UtilsPlugin.java" target-dir="src/org/apache/cordova/UtilsPlugin" />
 	    <source-file src="src/android/UriUtils.java" target-dir="src/org/apache/cordova/UtilsPlugin" />
 	    <source-file src="src/android/ApkInstallerProvider.java" target-dir="src/org/apache/cordova/apkInstaller/"/>
 	    <source-file src="res/xml/file_paths.xml" target-dir="res/xml/"/>
+	    
   	</platform>
   
   	<platform name="electron">

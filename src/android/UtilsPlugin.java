@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -24,16 +25,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.CancellationSignal;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 import android.view.WindowManager;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
+import androidx.credentials.CredentialManager;
+import androidx.credentials.GetPublicKeyCredentialOption;
+import androidx.credentials.GetCredentialRequest;
+import androidx.credentials.CredentialManagerCallback;
+import androidx.credentials.GetCredentialResponse;
+import androidx.credentials.exceptions.GetCredentialException;
+import androidx.credentials.Credential;
+import androidx.credentials.PublicKeyCredential;
+import androidx.credentials.CreatePublicKeyCredentialRequest;
+import androidx.credentials.CredentialManagerCallback;
+import androidx.credentials.CreateCredentialResponse;
+import androidx.credentials.exceptions.CreateCredentialException;
 
 public class UtilsPlugin extends CordovaPlugin {
-	
-	public static final int READ_EXTERNAL_STORAGE = 112;
 
+	public static final int READ_EXTERNAL_STORAGE = 112;
 
 	@Override
 	public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -76,25 +91,29 @@ public class UtilsPlugin extends CordovaPlugin {
 
 			} else if (action.equals("uploadGoogle")) {
 				this.uploadGoogle(args, callbackContext);
-				
+
 			} else if (action.equals("keepAwake")) {
 				this.keepAwake(args, callbackContext);
-				
+
 			} else if (action.equals("resolveUri")) {
 				this.resolveUri(args, callbackContext);
-				
-			} else if(action.equals("sdkVersion")){
+
+			} else if (action.equals("sdkVersion")) {
 				this.sdkVersion(callbackContext);
-				
+
+			} else if (action.equals("passkeyAssertion")) {
+				this.passkeyAssertion(args, callbackContext);
+			} else if (action.equals("createPasskey")) {
+				this.createPasskey(args, callbackContext);
 			} else if (action.equals("exit")) {
-				
+
 				Activity activity = this.cordova.getActivity();
 				activity.finish();
-	            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, 0));
-	        }
-			
+				callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, 0));
+			}
+
 			return true;
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			callbackContext.error(e.getMessage());
@@ -103,20 +122,90 @@ public class UtilsPlugin extends CordovaPlugin {
 		return false;
 	}
 
+	private void createPasskey(JSONArray args, CallbackContext callbackContext) throws Exception {
+		final String requestJson = args.getString(0);
+		
+		CredentialManager credentialManager = CredentialManager.create(cordova.getActivity());
+		
+		CreatePublicKeyCredentialRequest createPublicKeyCredentialRequest = new CreatePublicKeyCredentialRequest(requestJson);
+
+		final Handler handler = new Handler(Looper.getMainLooper());
+		Executor executor = handler::post;
+		
+		credentialManager.createCredentialAsync(
+				cordova.getActivity(),
+				createPublicKeyCredentialRequest,
+				new CancellationSignal(),
+				executor,
+				new CredentialManagerCallback<CreateCredentialResponse, CreateCredentialException>() {
+					@Override
+					public void onResult(CreateCredentialResponse result) {
+						callbackContext.success("");
+					}
+
+					@Override
+					public void onError(CreateCredentialException e) {
+						e.printStackTrace();
+						callbackContext.error(e.getMessage());
+					}
+				});
+
+	}
+
+	private void passkeyAssertion(JSONArray args, CallbackContext callbackContext) throws Exception {
+		final String optionsJson = args.getString(0);
+
+		CredentialManager credentialManager = CredentialManager.create(cordova.getActivity());
+
+		GetPublicKeyCredentialOption getPublicKeyCredentialOption = new GetPublicKeyCredentialOption(optionsJson);
+
+		GetCredentialRequest getCredRequest = new GetCredentialRequest.Builder()
+				.addCredentialOption(getPublicKeyCredentialOption)
+				.build();
+
+		final Handler handler = new Handler(Looper.getMainLooper());
+		Executor executor = handler::post;
+
+		credentialManager.getCredentialAsync(
+				// Use activity based context to avoid undefined
+				// system UI launching behavior
+				cordova.getActivity(),
+				getCredRequest,
+				new CancellationSignal(),
+				executor,
+				new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
+					@Override
+					public void onResult(GetCredentialResponse result) {
+						Credential credential = result.getCredential();
+
+						if (credential instanceof PublicKeyCredential) {
+							String responseJson = ((PublicKeyCredential) credential).getAuthenticationResponseJson();
+							callbackContext.success(responseJson);
+						}
+					}
+
+					@Override
+					public void onError(GetCredentialException e) {
+						e.printStackTrace();
+						callbackContext.error(e.getMessage());
+					}
+				});
+	}
+
 	private void resolveUri(JSONArray args, CallbackContext callbackContext) throws Exception {
 		final String uri = args.getString(0);
 		Context context = cordova.getActivity().getApplicationContext();
-		
+
 		callbackContext.success(UriUtils.getPathFromUri(context, uri));
 	}
 
 	private void keepAwake(JSONArray args, final CallbackContext callbackContext) {
-		
+
 		cordova.getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-            	cordova.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            	callbackContext.success();
-            }
+			public void run() {
+				cordova.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+				callbackContext.success();
+			}
 		});
 	}
 
@@ -141,14 +230,14 @@ public class UtilsPlugin extends CordovaPlugin {
 				.setPackage("com.google.android.apps.docs");
 
 		cordova.getActivity().startActivity(uploadIntent);
-		
+
 		callbackContext.success();
 	}
 
 	private void executeCommand(final JSONArray args, final CallbackContext callbackContext) throws Exception {
 
 		final JSONArray commands = args.getJSONArray(0);
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 
 		for (int i = 0; i < commands.length(); i++) {
 			list.add(commands.getString(i));
@@ -244,13 +333,12 @@ public class UtilsPlugin extends CordovaPlugin {
 		final String name = args.getString(0);
 
 		PluginResult result = new PluginResult(PluginResult.Status.OK, FileUtils.readFileToByteArray(new File(name)));
-		
+
 		callbackContext.sendPluginResult(result);
-		//callbackContext.success();
 	}
-	
+
 	private void sdkVersion(final CallbackContext callbackContext) {
-		callbackContext.success( android.os.Build.VERSION.SDK_INT );
+		callbackContext.success(android.os.Build.VERSION.SDK_INT);
 	}
 
 	private boolean installUpdate(final JSONArray args, final CallbackContext callbackContext) {
@@ -262,7 +350,7 @@ public class UtilsPlugin extends CordovaPlugin {
 			public void run() {
 
 				File file = null;
-				
+
 				try {
 					String dataBade64 = args.getString(0);
 

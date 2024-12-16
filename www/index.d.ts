@@ -23,6 +23,8 @@ export interface CordovaUtils {
 		sdkVersion: () => Promise<number>;
 		uploadGoogle: (path: string) => Promise<void>;
 		keepAwake: () => Promise<void>;
+		passkeyAssertion: (options: string) => Promise<string>;
+		createPasskey: (options: string) => Promise<string>;
 	},
 
 	localStorage: {
