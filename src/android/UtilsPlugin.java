@@ -42,8 +42,8 @@ import androidx.credentials.exceptions.GetCredentialException;
 import androidx.credentials.Credential;
 import androidx.credentials.PublicKeyCredential;
 import androidx.credentials.CreatePublicKeyCredentialRequest;
-import androidx.credentials.CredentialManagerCallback;
 import androidx.credentials.CreateCredentialResponse;
+import androidx.credentials.CreatePublicKeyCredentialResponse;
 import androidx.credentials.exceptions.CreateCredentialException;
 
 public class UtilsPlugin extends CordovaPlugin {
@@ -140,7 +140,12 @@ public class UtilsPlugin extends CordovaPlugin {
 				new CredentialManagerCallback<CreateCredentialResponse, CreateCredentialException>() {
 					@Override
 					public void onResult(CreateCredentialResponse result) {
-						callbackContext.success("");
+						
+						if(result instanceof CreatePublicKeyCredentialResponse) {
+							callbackContext.success(((CreatePublicKeyCredentialResponse)result).getRegistrationResponseJson());
+						} else {
+							callbackContext.error("Type response not supported");
+						}
 					}
 
 					@Override
@@ -181,6 +186,8 @@ public class UtilsPlugin extends CordovaPlugin {
 						if (credential instanceof PublicKeyCredential) {
 							String responseJson = ((PublicKeyCredential) credential).getAuthenticationResponseJson();
 							callbackContext.success(responseJson);
+						} else {
+							callbackContext.error("Type response not supported");
 						}
 					}
 
