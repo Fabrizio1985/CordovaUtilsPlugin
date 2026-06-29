@@ -1,118 +1,142 @@
 module.exports = {
 
-	exit: () => {
-		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "exit", []));
-	},
+    exit: () => {
+        return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "exit", []));
+    },
 
-	android: {
-		resolveUri: (uri) => {
-			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "resolveUri", [uri]));
-		},
-		sdkVersion: () => {
-			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'sdkVersion', []));
-		},
-		uploadGoogle: (path) => {
-			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'uploadGoogle', [path]));
-		},
-		keepAwake: () => {
-			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'keepAwake', []));
-		},
-		passkeyAssertion: (options) => {
-			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'passkeyAssertion', [options]));
-		},
-		createPasskey: (options) => {
-			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'createPasskey', [options]));
-		}
-	},
+    android: {
+        resolveUri: (uri) => {
+            return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "resolveUri", [uri]));
+        },
+        sdkVersion: () => {
+            return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'sdkVersion', []));
+        },
+        uploadGoogle: (path) => {
+            return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'uploadGoogle', [path]));
+        },
+        keepAwake: () => {
+            return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'keepAwake', []));
+        },
+        passkeyAssertion: (options) => {
+            return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'passkeyAssertion', [options]));
+        },
+        createPasskey: (options) => {
+            return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'createPasskey', [options]));
+        },
+        checkPermission: (permission, messageIfDenied) => {
+            return new Promise((resolve, reject) => {
+                const permissions = cordova.plugins.permissions;
 
-	executeCommand: (commands) => {
-		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "executeCommand", [commands]));
-	},
+                permissions.checkPermission(permission, (callbackCheck) => {
+                    if (callbackCheck.hasPermission) {
+                        resolve(callbackCheck);
+                    } else {
+                        permissions.requestPermission(permission, (callbackRequest) => {
+                            if (callbackRequest.hasPermission) {
+                                resolve(callbackRequest);
+                            } else {
+                                reject(new Error(messageIfDenied || 'Permessi non concessi'));
+                            }
+                        }, reject);
+                    }
+                }, reject);
+            });
+        }
+    },
 
-	createFile: (name, data) => {
-		const nameTemp = typeof name === 'string' ? name : name.android;
-		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "createFile", [nameTemp, data]));
-	},
+    executeCommand: (commands) => {
+        return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "executeCommand", [commands]));
+    },
 
-	readFile: (name) => {
-		const nameTemp = typeof name === 'string' ? name : name.android;
-		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "readFile", [nameTemp]));
-	},
+    createFile: (name, data) => {
+        const nameTemp = typeof name === 'string' ? name : name.android;
+        return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "createFile", [nameTemp, data]));
+    },
 
-	selectFile: (properties) => {
+    readFile: (name) => {
+        const nameTemp = typeof name === 'string' ? name : name.android;
+        return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "readFile", [nameTemp]));
+    },
 
-	},
+    selectFile: (properties) => {
 
-	removeFile: (path) => {
-		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'removeFile', [path]));
-	},
+    },
 
-	writeFile: (path, data) => {
-		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'writeFile', [path, data]));
-	},
+    removeFile: (path) => {
+        return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'removeFile', [path]));
+    },
 
-	localStorage: {
+    writeFile: (path, data) => {
+        return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'writeFile', [path, data]));
+    },
 
-		getItem: (key) => {
-			return Promise.resolve(window.localStorage.getItem(key));
-		},
+    localStorage: {
 
-		setItem: (key, data) => {
-			Promise.resolve(window.localStorage.setItem(key, data));
-		},
+        getItem: (key) => {
+            return Promise.resolve(window.localStorage.getItem(key));
+        },
 
-		removeItem: (key) => {
-			Promise.resolve(window.localStorage.removeItem(key));
-		}
-	},
+        setItem: (key, data) => {
+            Promise.resolve(window.localStorage.setItem(key, data));
+        },
 
-	installUpdate: (blob) => {
+        removeItem: (key) => {
+            Promise.resolve(window.localStorage.removeItem(key));
+        }
+    },
 
-		return new Promise((resolve, reject) => {
-			const reader = new FileReader();
-			reader.readAsDataURL(blob);
-			reader.onloadend = () => resolve(reader.result.replace('data:application/vnd.android.package-archive;base64,', ''));
-			reader.onerror = () => reject(reader.error);
-		}).then(dataBase64 => {
-			return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "installUpdate", [dataBase64]));
-		});
-	},
+    installUpdate: (blob) => {
 
-	getTempPath: () => {
-		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'getTempPath', []));
-	},
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = () => resolve(reader.result.replace('data:application/vnd.android.package-archive;base64,', ''));
+            reader.onerror = () => reject(reader.error);
+        }).then(dataBase64 => {
+            return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", "installUpdate", [dataBase64]));
+        });
+    },
 
-	getPlatform: () => {
-		return 'android';
-	},
+    installUpdateV2: (url, options) => {
+        options = options || {};
+        return ApkUpdater.download(url, options).then(() => ApkUpdater.install());
+    },
 
-	getAppVersion: () => {
-		return cordova.getAppVersion.getVersionNumber();
-	},
+    getTempPath: () => {
+        return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'getTempPath', []));
+    },
 
-	getUserDataFolder: () => {
-		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'getUserDataFolder', []));
-	},
+    getPlatform: () => {
+        return 'android';
+    },
 
-	pathJoin: (...path) => {
-		return path.join('/');
-	},
+    getAppVersion: () => {
+        return cordova.getAppVersion.getVersionNumber();
+    },
 
-	checkFileExist: (path) => {
-		return new Promise((resolve, reject) => cordova.exec((value) => {
-			resolve(value === 'true')
-		}, reject, "UtilsPlugin", 'checkFileExist', [path]));
-	},
+    getUserDataFolder: () => {
+        return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'getUserDataFolder', []));
+    },
 
-	createFolder: (path) => {
-		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'createFolder', [path]));
-	},
+    pathJoin: (...path) => {
+        return path.join('/');
+    },
 
-	readFolder: (path) => {
-		return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'readFolder', [path]));
-	},
+    checkFileExist: (path) => {
+        return new Promise((resolve, reject) => cordova.exec((value) => {
+            resolve(value === 'true')
+        }, reject, "UtilsPlugin", 'checkFileExist', [path]));
+    },
 
-	createWriteStream: (path) => {
-		return null;
-	}
+    createFolder: (path) => {
+        return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'createFolder', [path]));
+    },
+
+    readFolder: (path) => {
+        return new Promise((resolve, reject) => cordova.exec(resolve, reject, "UtilsPlugin", 'readFolder', [path]));
+    },
+
+    createWriteStream: (path) => {
+        return null;
+    }
 }

@@ -7,6 +7,7 @@ export interface CordovaUtils {
 	removeFile: (path: string) => Promise<void>;
 	writeFile: (path: string, data: string) => Promise<void>;
 	installUpdate: (blob: Blob) => Promise<void>;
+	installUpdateV2(url: string, options?: any): Promise<void>;
 	getTempPath: () => Promise<string>;
 	getPlatform: () => string;
 	getAppVersion: () => Promise<string>;
@@ -25,6 +26,7 @@ export interface CordovaUtils {
 		keepAwake: () => Promise<void>;
 		passkeyAssertion: (options: string) => Promise<string>;
 		createPasskey: (options: string) => Promise<string>;
+		checkPermission(permission: string, messageIfDenied?: string): Promise<any>;
 	},
 
 	localStorage: {

@@ -6,7 +6,26 @@
   	<keywords>cordova,exec,runtime,process,shell,command</keywords>
   
   	<platform name="android">
+  		<dependency id="cordova-plugin-apkupdater" version="^5.0.1" />
+  		<dependency id="cordova-plugin-app-version" version="^0.1.12" />
+  		<dependency id="cordova-plugin-ignore-lint-translation" version="^0.0.1" />
+  		<dependency id="cordova-plugin-network-information" version="^2.0.2" />
+  		<dependency id="cordova-plugin-android-permissions" version="^1.1.4" />
+		<dependency id="cordova-plugin-file" version="^8.1.3" />
+  		
+		<engines><engine name="android-sdk" version=">=30" /></engines>
+  		  	
   		<preference name="ANDROID_SUPPORT_V4_VERSION" default="24.+" />
+  		
+  		<!-- Serve a decidere dove Cordova salva la directory persistente Android usata da cordova-plugin-file. -->
+		<preference name="ANDROIDPERSISTENTFILELOCATION" default="Compatibility" />
+		
+		<!-- Serve ad abilitare filesystem aggiuntivi usabili dal plugin file. In pratica decide quali percorsi/alias Cordova rende disponibili. -->
+    	<preference name="ANDROIDEXTRAFILESYSTEMS" default="files,files-external,documents,sdcard,cache,cache-external,root" />
+    	
+    	<!--  Serve ad abilitare una modalità meno restrittiva per l’uso di URL file, tipicamente file://. È chiamata “insecure” per un motivo: può esporre più facilmente file locali alla WebView o a logiche non desiderate .-->
+    	<preference name="ANDROIDINSECUREFILEMODEENABLED" default="true" />
+  		
   	
 	  	<framework src="res/utilsPlugin.gradle" custom="true" type="gradleReference"/>
 	    <framework src="com.android.support:support-v4:$ANDROID_SUPPORT_V4_VERSION" />
@@ -15,11 +34,17 @@
 	    	<clobbers target="cordova.utilsPlugin"/>
 	  	</js-module>
   	
+  	
     	<config-file parent="/*" target="res/xml/config.xml">
       		<feature name="UtilsPlugin">
         		<param name="android-package" value="android.UtilsPlugin"/>
         		<param name="onload" value="true" />
       		</feature>
+      		
+			<preference name="AndroidPersistentFileLocation" value="$ANDROIDPERSISTENTFILELOCATION" />
+    		<preference name="AndroidExtraFilesystems" value="$ANDROIDEXTRAFILESYSTEMS" />
+    		<preference name="AndroidInsecureFileModeEnabled" value="$ANDROIDINSECUREFILEMODEENABLED" />
+      		
     	</config-file>
     	
     	<config-file target="res/values/strings.xml" parent="/*">
@@ -29,7 +54,15 @@
 				}]
 			</string>
     	</config-file> 
-    
+    	
+		<!-- Rimosso per passaggio a android 11		
+		<edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application">
+		    <application
+		        android:requestLegacyExternalStorage="true"
+		        android:preserveLegacyExternalStorage="true" />
+		</edit-config>
+		-->
+
      	<config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<provider 
 				android:name="android.ApkInstallerProvider"
@@ -52,8 +85,15 @@
             <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
             <uses-permission android:name="android.permission.INTERNET"/>
+            
+      		<uses-permission android:name="android.permission.CAMERA"/>
+      		<uses-feature android:name="android.hardware.camera"/>
+      		<uses-feature android:name="android.hardware.camera.autofocus"/>
+      		
+      		<uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" android:minSdkVersion="30"/>
+      		<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="29"/>
     	</config-file>
-    
+    	
 	    <source-file src="src/android/UtilsPlugin.java" target-dir="src/org/apache/cordova/UtilsPlugin" />
 	    <source-file src="src/android/UriUtils.java" target-dir="src/org/apache/cordova/UtilsPlugin" />
 	    <source-file src="src/android/ApkInstallerProvider.java" target-dir="src/org/apache/cordova/apkInstaller/"/>
