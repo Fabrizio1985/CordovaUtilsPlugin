@@ -348,6 +348,7 @@ public class UtilsPlugin extends CordovaPlugin {
 		callbackContext.success(android.os.Build.VERSION.SDK_INT);
 	}
 
+	@Deprecated
 	private boolean installUpdate(final JSONArray args, final CallbackContext callbackContext) {
 
 		final String MYME_TYPE_APK = "application/vnd.android.package-archive";

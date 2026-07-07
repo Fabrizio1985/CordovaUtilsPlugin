@@ -47,14 +47,6 @@
       		
     	</config-file>
     	
-    	<config-file target="res/values/strings.xml" parent="/*">
-        	<string name="asset_statements" translatable="false">
-				[{
-  					\"include\": \"https://fabriziotiracorrendo.netsons.org/.well-known/assetlinks.json\"
-				}]
-			</string>
-    	</config-file> 
-    	
 		<!-- Rimosso per passaggio a android 11		
 		<edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application">
 		    <application
@@ -98,6 +90,7 @@
 	    <source-file src="src/android/UriUtils.java" target-dir="src/org/apache/cordova/UtilsPlugin" />
 	    <source-file src="src/android/ApkInstallerProvider.java" target-dir="src/org/apache/cordova/apkInstaller/"/>
 	    <source-file src="res/xml/file_paths.xml" target-dir="res/xml/"/>
+	    <source-file src="res/values/asset_statements.xml" target-dir="res/values/"/>
 	    
   	</platform>
   
