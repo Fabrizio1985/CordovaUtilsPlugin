@@ -23,10 +23,10 @@
 		<!-- Serve ad abilitare filesystem aggiuntivi usabili dal plugin file. In pratica decide quali percorsi/alias Cordova rende disponibili. -->
     	<preference name="ANDROIDEXTRAFILESYSTEMS" default="files,files-external,documents,sdcard,cache,cache-external,root" />
     	
+    	<!-- Rimosso da cordova 15 -->
     	<!--  Serve ad abilitare una modalità meno restrittiva per l’uso di URL file, tipicamente file://. È chiamata “insecure” per un motivo: può esporre più facilmente file locali alla WebView o a logiche non desiderate .-->
-    	<preference name="ANDROIDINSECUREFILEMODEENABLED" default="true" />
+    	<!-- <preference name="ANDROIDINSECUREFILEMODEENABLED" default="true" /> -->
   		
-  	
 	  	<framework src="res/utilsPlugin.gradle" custom="true" type="gradleReference"/>
 	    <framework src="com.android.support:support-v4:$ANDROID_SUPPORT_V4_VERSION" />
 	  
@@ -43,7 +43,15 @@
       		
 			<preference name="AndroidPersistentFileLocation" value="$ANDROIDPERSISTENTFILELOCATION" />
     		<preference name="AndroidExtraFilesystems" value="$ANDROIDEXTRAFILESYSTEMS" />
-    		<preference name="AndroidInsecureFileModeEnabled" value="$ANDROIDINSECUREFILEMODEENABLED" />
+    		
+    		<!-- Rimosso da cordova 15 -->
+    		<!-- <preference name="AndroidInsecureFileModeEnabled" value="$ANDROIDINSECUREFILEMODEENABLED" /> -->
+      		
+      		<!-- Serve da cordova 15 a caricare il file delle icone icone  -->
+  			<preference name="scheme" value="https" />
+			<preference name="hostname" value="localhost" />
+			
+			<allow-intent href="market:*" />
       		
     	</config-file>
     	
