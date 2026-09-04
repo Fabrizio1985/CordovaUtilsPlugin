@@ -52,7 +52,7 @@
 			<preference name="hostname" value="localhost" />
 			
 			<allow-intent href="market:*" />
-      		
+      		<resource-file src="build-extras.gradle" target="build-extras.gradle" />
     	</config-file>
     	
 		<!-- Rimosso per passaggio a android 11		
