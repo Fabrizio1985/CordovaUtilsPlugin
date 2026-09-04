@@ -1,0 +1,16 @@
+{
+    "android": {
+        "debug": {
+            "keystore": "./MioCertificato",
+            "storePassword": "fabrizio",
+            "alias": "fabrizio",
+            "password" : "fabrizio"
+        },
+        "release": {
+            "keystore": "./MioCertificato",
+            "storePassword": "fabrizio",
+            "alias": "fabrizio",
+            "password" : "fabrizio"
+        }
+    }
+}

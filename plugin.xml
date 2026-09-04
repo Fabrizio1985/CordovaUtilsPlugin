@@ -4,6 +4,8 @@
   	<description>Apache Cordova Execute Shell Command Plugin</description>
   	<license>Apache 2.0</license>
   	<keywords>cordova,exec,runtime,process,shell,command</keywords>
+  	
+  	<hook type="after_plugin_install" src="hooks/copy-signing-config.js" />
   
   	<platform name="android">
   		<dependency id="cordova-plugin-apkupdater" version="^5.0.1" />
